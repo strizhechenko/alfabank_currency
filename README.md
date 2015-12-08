@@ -19,6 +19,8 @@
 В Python
 
 	from alfa_currency import fetch_currency
+	
 	currency = fetch_currency()
+	
 	print currency['euro']['buy']
 	print currency['dollar']['sell']
