@@ -12,7 +12,7 @@ def fetch_currency():
     currency = root.find('channel/item/description')
     open('tmp.xml', 'w').write(currency.text.encode('cp1251'))
     root = etree.parse('tmp.xml').getroot()
-    euro = root.find('div/table')[3]
+    euro = root.find('div/table')[2]
     dollar = root.find('div/table')[4]
     return {
         "euro": {
