@@ -1,19 +1,15 @@
 # coding: utf-8
 """ Подтягивает данные о курсах валют для интернет-банка альфа-банка """
-from urllib2 import urlopen
-import xml.etree.ElementTree as etree
+import requests
+from bs4 import BeautifulSoup as Soup
 
 
 def fetch_currency():
     """ Возвращает dict с ценами на доллары и евро """
-    endpoint = 'https://alfabank.ru/_/rss/_currency.html'
-    tree = etree.parse(urlopen(endpoint))
-    root = tree.getroot()
-    currency = root.find('channel/item/description')
-    open('tmp.xml', 'w').write(currency.text.encode('cp1251'))
-    root = etree.parse('tmp.xml').getroot()
-    euro = root.find('div/table')[2]
-    dollar = root.find('div/table')[4]
+    parser = "html.parser"
+    response = requests.get('https://alfabank.ru/_/rss/_currency.html')
+    currencies = Soup(Soup(response.text, parser).description.text, parser).find_all("tr")
+    dollar, euro = list(currencies[1]), list(currencies[2])
     return {
         "euro": {
             "buy": euro[1].text,
